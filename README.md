@@ -3,6 +3,8 @@
 
 ---
 
+<img width="1054" height="569" alt="Image" src="https://github.com/user-attachments/assets/d7e9b830-ec3c-4233-a714-25f6d731eab9" />
+
 ## Environment Variables
 
 ```
