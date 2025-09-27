@@ -7,30 +7,36 @@ spring:
       server:
         webflux:
           routes:
+            - id: auth-service-route
+              uri: http://auth-service:4005
+              predicates:
+                - Path=/auth/**
+              filters:
+                - StripPrefix=1
             # Route for /api/patients/** to patient-service
-                    # REST CLIENT --> http://localhost:4004/api/patients , API gateway will try to match predicates /api/patients\
-                    # API GATEWAY --> http://patient-service:4000/patients
-                    # PATIENT SERVICE (SPRING BOOT APP) --> /patients --> Patients Array
-                    - id: patient-service-route
-                      # internal docker will solve the dns
-                      uri: http://patient-service:4000
+            # REST CLIENT --> http://localhost:4004/api/patients , API gateway will try to match predicates /api/patients\
+            # API GATEWAY --> http://patient-service:4000/patients
+            # PATIENT SERVICE (SPRING BOOT APP) --> /patients --> Patients Array
+            - id: patient-service-route
+              # internal docker will solve the dns
+              uri: http://patient-service:4000
 
-                      # what request is to be sent to
-                      predicates:
-                        - Path=/api/patients/**
+              # what request is to be sent to
+              predicates:
+                - Path=/api/patients/**
 
-                      #re-write predicates before forward the request to actual service
-                      filters:
-                        # strip /api for this case
-                        - StripPrefix=1
+              #re-write predicates before forward the request to actual service
+              filters:
+                # strip /api for this case
+                - StripPrefix=1
 
-                    # Route for /api/docs/patients to patient-service /v3/api-docs
-                    # SWAGGER DOC
-                    # REST-CLIENT --> http://localhost:4004/api-docs/patients
-                    # API-GATEWAY --> http://patient-service:4000/v3/api-docs (filters re-write)
-                    - id: api-docs-patient-route
-                      uri: http://patient-service:4000
-                      predicates:
-                        - Path=/api-docs/patients
-                      filters:
-                        - RewritePath=/api-docs/patients,/v3/api-docs
+            # Route for /api/docs/patients to patient-service /v3/api-docs
+            # SWAGGER DOC
+            # REST-CLIENT --> http://localhost:4004/api-docs/patients
+            # API-GATEWAY --> http://patient-service:4000/v3/api-docs (filters re-write)
+            - id: api-docs-patient-route
+              uri: http://patient-service:4000
+              predicates:
+                - Path=/api-docs/patients
+              filters:
+                - RewritePath=/api-docs/patients,/v3/api-docs
