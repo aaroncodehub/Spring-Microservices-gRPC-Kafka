@@ -29,6 +29,7 @@ spring:
               filters:
                 # strip /api for this case
                 - StripPrefix=1
+                - JwtValidation
 
             # Route for /api/docs/patients to patient-service /v3/api-docs
             # SWAGGER DOC
@@ -40,3 +41,9 @@ spring:
                 - Path=/api-docs/patients
               filters:
                 - RewritePath=/api-docs/patients,/v3/api-docs
+            - id: api-docs-auth-route
+              uri: http://auth-service:4005
+              predicates:
+                - Path=/api-docs/auth
+              filters:
+                - RewritePath=/api-docs/auth,/v3/api-docs

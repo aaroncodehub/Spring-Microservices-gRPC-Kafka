@@ -1,4 +1,4 @@
-### GET request to get all patients
+### GET request to get all patients via API GATEWAY that checks token for patients sevice
 GET http://localhost:4004/api/patients
-
+Authorization: Bearer {{token}}
 ###
